@@ -27,7 +27,7 @@ spring:
               predicates:
                 - Path=/api/v1/passenger/**
             - id: restricted-zone-api
-              uri: lb://restrictedZone-service
+              uri: lb://restrictedzone-service
               predicates:
                 - Path=/api/v1/restricted-zone/**
 
@@ -66,7 +66,7 @@ spring:
                 - RewritePath=/docs/passenger/(?<segment>.*), /$\{segment}
 
             - id: restricted-zone-docs
-              uri: lb://restrictedZone-service
+              uri: lb://restrictedzone-service
               predicates:
                 - Path=/docs/restricted-zone/v3/api-docs
               filters:
@@ -96,4 +96,5 @@ springdoc:
 eureka:
   client:
     service-url:
+
       defaultZone: http://eureka-server:8761/eureka

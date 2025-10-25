@@ -1,0 +1,99 @@
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: flight-api
+              uri: lb://flight-service
+              predicates:
+                - Path=/api/v1/flight/**
+            - id: booking-api
+              uri: lb://booking-service
+              predicates:
+                - Path=/api/v1/booking/**
+            - id: airline-api
+              uri: lb://airline-service
+              predicates:
+                - Path=/api/v1/airline/**
+            - id: airport-api
+              uri: lb://airport-service
+              predicates:
+                - Path=/api/v1/airport/**
+            - id: passenger-api
+              uri: lb://passenger-service
+              predicates:
+                - Path=/api/v1/passenger/**
+            - id: restricted-zone-api
+              uri: lb://restrictedZone-service
+              predicates:
+                - Path=/api/v1/restricted-zone/**
+
+            - id: flight-docs
+              uri: lb://flight-service
+              predicates:
+                - Path=/docs/flight/v3/api-docs
+              filters:
+                - RewritePath=/docs/flight/(?<segment>.*), /$\{segment}
+
+            - id: booking-docs
+              uri: lb://booking-service
+              predicates:
+                - Path=/docs/booking/v3/api-docs
+              filters:
+                - RewritePath=/docs/booking/(?<segment>.*), /$\{segment}
+            - id: airline-docs
+              uri: lb://airline-service
+              predicates:
+                - Path=/docs/airline/v3/api-docs
+              filters:
+                - RewritePath=/docs/airline/(?<segment>.*), /$\{segment}
+
+            - id: airport-docs
+              uri: lb://airport-service
+              predicates:
+                - Path=/docs/airport/v3/api-docs
+              filters:
+                - RewritePath=/docs/org/(?<segment>.*), /$\{segment}
+
+            - id: passenger-docs
+              uri: lb://passenger-service
+              predicates:
+                - Path=/docs/passenger/v3/api-docs
+              filters:
+                - RewritePath=/docs/passenger/(?<segment>.*), /$\{segment}
+
+            - id: restricted-zone-docs
+              uri: lb://restrictedZone-service
+              predicates:
+                - Path=/docs/restricted-zone/v3/api-docs
+              filters:
+                - RewritePath=/docs/restricted-zone/(?<segment>.*), /$\{segment}
+
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+server:
+  port: 8080
+springdoc:
+  swagger-ui:
+    urls:
+      - name: Flight
+        url: /docs/flight/v3/api-docs
+      - name: Booking
+        url: /docs/booking/v3/api-docs
+      - name: Airline
+        url: /docs/airline/v3/api-docs
+      - name: Airport
+        url: /docs/airport/v3/api-docs
+      - name: Passenger
+        url: /docs/passenger/v3/api-docs
+      - name: RestrictedZone
+        url: /docs/restricted-zone/v3/api-docs
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka

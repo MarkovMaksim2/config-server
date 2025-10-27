@@ -11,27 +11,27 @@ spring:
             - id: flight-api
               uri: lb://flight-service
               predicates:
-                - Path=/api/v1/flight/**
+                - Path=/api/flights/**
             - id: booking-api
               uri: lb://booking-service
               predicates:
-                - Path=/api/v1/booking/**
+                - Path=/api/bookings/**
             - id: airline-api
               uri: lb://airline-service
               predicates:
-                - Path=/api/v1/airline/**
+                - Path=/api/airlines/**
             - id: airport-api
               uri: lb://airport-service
               predicates:
-                - Path=/api/v1/airport/**
+                - Path=/api/airports/**
             - id: passenger-api
               uri: lb://passenger-service
               predicates:
-                - Path=/api/v1/passenger/**
+                - Path=/api/passengers/**
             - id: restricted-zone-api
               uri: lb://restrictedzone-service
               predicates:
-                - Path=/api/v1/restricted-zone/**
+                - Path=/api/restricted-zones/**
 
             - id: flight-docs
               uri: lb://flight-service

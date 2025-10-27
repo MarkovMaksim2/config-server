@@ -58,7 +58,7 @@ spring:
               predicates:
                 - Path=/docs/airport/v3/api-docs
               filters:
-                - RewritePath=/docs/org/(?<segment>.*), /$\{segment}
+                - RewritePath=/docs/airport/(?<segment>.*), /$\{segment}
 
             - id: passenger-docs
               uri: lb://passenger-service

@@ -5,6 +5,8 @@ spring:
     gateway:
       server:
         webflux:
+          default-filters:
+            - PreserveHostHeader
           routes:
             - id: flight-api
               uri: lb://flight-service
@@ -71,11 +73,17 @@ spring:
                 - Path=/docs/restricted-zone/v3/api-docs
               filters:
                 - RewritePath=/docs/restricted-zone/(?<segment>.*), /$\{segment}
-
+            
           discovery:
             locator:
               enabled: true
               lower-case-service-id: true
+          x-forwarded:
+            enabled: true
+            host-enabled: true
+            port-enabled: true
+            proto-enabled: true
+            prefix-enabled: true
 server:
   port: 8080
 springdoc:

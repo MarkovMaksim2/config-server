@@ -3,21 +3,23 @@ server:
 spring:
   application:
     name: airline-service
-  datasource:
-    url: jdbc:postgresql://postgres:5432/airflights
+  r2dbc:
+    url: r2dbc:postgresql://postgres:5432/airflights
     username: postgres
     password: postgres
+    schema: airline
   jpa:
-    hibernate:
-      ddl-auto: validate
-    properties.hibernate.default_schema: airline
+    enabled: false
   flyway:
     enabled: true
     schemas: airline
     locations: classpath:db/migration
   cloud:
+    circuitbreaker:
+      enabled: true
     openfeign:
-      circuitbreaker.enabled: true
+      circuitbreaker:
+        enabled: true
       client:
         config:
           organization-service:
@@ -28,16 +30,32 @@ spring:
             connect-timeout: 2000
             read-timeout: 3000
             logger-level: basic
+  cloud:
+    discovery:
+      reactive:
+        enabled: true
+
 resilience4j:
   circuitbreaker:
     instances:
       orgClient:
         sliding-window-size: 20
         failure-rate-threshold: 50
+        register-health-indicator: true
       employeeClient:
         sliding-window-size: 20
         failure-rate-threshold: 50
+        register-health-indicator: true
+  timelimiter:
+    instances:
+      orgClient:
+        timeout-duration: 4s
+      employeeClient:
+        timeout-duration: 4s
+
 eureka:
   client:
     service-url:
       defaultZone: http://eureka-server:8761/eureka
+    healthcheck:
+      enabled: true

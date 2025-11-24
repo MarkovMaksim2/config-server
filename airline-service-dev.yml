@@ -1,5 +1,6 @@
 server:
   port: 0
+  forward-headers-strategy: framework
 spring:
   application:
     name: airline-service
@@ -7,51 +8,15 @@ spring:
     url: r2dbc:postgresql://postgres:5432/airflights
     username: postgres
     password: postgres
-    schema: airline
-  jpa:
-    enabled: false
+    properties:
+      schema: airline
   flyway:
     enabled: true
     schemas: airline
     locations: classpath:db/migration
-  cloud:
-    circuitbreaker:
-      enabled: true
-    openfeign:
-      circuitbreaker:
-        enabled: true
-      client:
-        config:
-          organization-service:
-            connect-timeout: 2000
-            read-timeout: 3000
-            logger-level: basic
-          employee-service:
-            connect-timeout: 2000
-            read-timeout: 3000
-            logger-level: basic
-  cloud:
-    discovery:
-      reactive:
-        enabled: true
-
-resilience4j:
-  circuitbreaker:
-    instances:
-      orgClient:
-        sliding-window-size: 20
-        failure-rate-threshold: 50
-        register-health-indicator: true
-      employeeClient:
-        sliding-window-size: 20
-        failure-rate-threshold: 50
-        register-health-indicator: true
-  timelimiter:
-    instances:
-      orgClient:
-        timeout-duration: 4s
-      employeeClient:
-        timeout-duration: 4s
+    user: postgres
+    password: password
+    url: jdbc:postgresql://postgres:5432/airflights
 
 eureka:
   client:

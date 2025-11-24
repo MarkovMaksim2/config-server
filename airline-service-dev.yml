@@ -15,7 +15,7 @@ spring:
     schemas: airline
     locations: classpath:db/migration
     user: postgres
-    password: password
+    password: postgres
     url: jdbc:postgresql://postgres:5432/airflights
 
 eureka:

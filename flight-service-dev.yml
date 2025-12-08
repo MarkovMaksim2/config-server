@@ -20,23 +20,38 @@ spring:
       circuitbreaker.enabled: true
       client:
         config:
-          organization-service:
+          airline-service:
             connect-timeout: 2000
             read-timeout: 3000
             logger-level: basic
-          employee-service:
+          airport-service:
             connect-timeout: 2000
             read-timeout: 3000
             logger-level: basic
 resilience4j:
   circuitbreaker:
     instances:
-      orgClient:
+      airportClient:
         sliding-window-size: 20
         failure-rate-threshold: 50
-      employeeClient:
-        sliding-window-size: 20
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        record-exceptions:
+          - java.net.ConnectException
+          - java.net.SocketTimeoutException
+          - java.net.UnknownHostException
+          - feign.RetryableException
+      airlineClient:sliding-window-size: 20
         failure-rate-threshold: 50
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        record-exceptions:
+          - java.net.ConnectException
+          - java.net.SocketTimeoutException
+          - java.net.UnknownHostException
+          - feign.RetryableException
 eureka:
   client:
     service-url:

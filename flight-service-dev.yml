@@ -17,7 +17,6 @@ spring:
     locations: classpath:db/migration
   cloud:
     openfeign:
-      circuitbreaker.enabled: true
       client:
         config:
           airline-service:

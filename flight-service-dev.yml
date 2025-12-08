@@ -24,7 +24,7 @@ spring:
             read-timeout: 3000
             logger-level: basic
           airport-service:
-            connect-timeout: 2000
+            connect-timeout: 20000
             read-timeout: 3000
             logger-level: basic
 resilience4j:

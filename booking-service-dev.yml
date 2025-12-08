@@ -17,26 +17,41 @@ spring:
     locations: classpath:db/migration
   cloud:
     openfeign:
-      circuitbreaker.enabled: true
       client:
         config:
-          organization-service:
+          flight-service:
             connect-timeout: 2000
             read-timeout: 3000
             logger-level: basic
-          employee-service:
+          passenger-service:
             connect-timeout: 2000
             read-timeout: 3000
             logger-level: basic
 resilience4j:
   circuitbreaker:
     instances:
-      orgClient:
+      flightClient:
         sliding-window-size: 20
         failure-rate-threshold: 50
-      employeeClient:
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        record-exceptions:
+          - java.net.ConnectException
+          - java.net.SocketTimeoutException
+          - java.net.UnknownHostException
+          - feign.RetryableException
+      passengerClient:
         sliding-window-size: 20
         failure-rate-threshold: 50
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        record-exceptions:
+          - java.net.ConnectException
+          - java.net.SocketTimeoutException
+          - java.net.UnknownHostException
+          - feign.RetryableException
 eureka:
   client:
     service-url:
